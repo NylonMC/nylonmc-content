@@ -12,6 +12,7 @@ import io.github.nylonmc.core.PythonAdapter;
 import io.github.nylonmc.core.proxies.BaseProxy;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
+//todo broken
 public class NylonClientCommands implements PreLaunchEntrypoint {
 
     private static ArrayList<LiteralArgumentBuilder> toRegister = new ArrayList<>();

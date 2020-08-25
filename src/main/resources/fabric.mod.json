@@ -26,8 +26,7 @@
         "adapter": "python",
         "value": "modid.common"
       }
-    ],
-    "cotton-client-commands": ["this doesn't exist why won't it try to call the entry point ahhhhh"]
+    ]
   },
 
   "depends": {
