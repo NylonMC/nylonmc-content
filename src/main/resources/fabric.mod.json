@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "nylonmc-content",
   "version": "${version}",
 
   "name": "Example Mod",
@@ -13,17 +13,21 @@
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
 
-  "license": "CC0-1.0",
+  "license": "LGPL-3.0-or-later",
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
   "entrypoints": {
+    "prelaunch": [
+      "io.github.nylonmc.content.NylonClientCommands"
+    ],
     "main": [
       {
         "adapter": "python",
         "value": "modid.common"
       }
-    ]
+    ],
+    "cotton-client-commands": ["this doesn't exist why won't it try to call the entry point ahhhhh"]
   },
 
   "depends": {
