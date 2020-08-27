@@ -19,10 +19,12 @@ ItemGroups = _ItemGroupsClass()
 _JRegistryClass = JavaClass("io/github/nylonmc/content/proxy/RegistryProxy")
 _JRegistry = _JRegistryClass()
 _id_to_iitem = dict()
+_id_to_item_wrapper = dict()
 class _Registry:
     def register_item(self, id, item):
         item_wrapper = _ItemWrapper(item)
         _JRegistry.register(_JRegistry.getItemRegistry(), id, item_wrapper)
         _id_to_iitem[item_wrapper.getNumericalId()] = item
+        _id_to_item_wrapper[item_wrapper.getNumericalId()] = item_wrapper
 registry = _Registry()
 ActionResult = JavaClass("io/github/nylonmc/content/proxy/ActionResultProxy")

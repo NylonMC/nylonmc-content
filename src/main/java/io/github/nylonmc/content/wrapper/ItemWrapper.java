@@ -3,8 +3,8 @@ package io.github.nylonmc.content.wrapper;
 import io.github.nylonmc.content.ReturnValueContainer;
 import io.github.nylonmc.content.interfaces.IItem;
 import io.github.nylonmc.content.proxy.ItemSettingsProxy;
-import io.github.nylonmc.content.wrapper.datatransfer.ItemWrapperData;
 import io.github.nylonmc.core.Core;
+import io.github.nylonmc.core.PythonThread;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +17,7 @@ public class ItemWrapper extends Item {
     protected IItem iitem;
     private long idCounter = 0;
     private final long numericalId;
+    public UseData useData;
 
     private static Item.Settings getSettingsFromIItem(IItem item) {
         ReturnValueContainer a = new ReturnValueContainer();
@@ -41,14 +42,27 @@ public class ItemWrapper extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ReturnValueContainer a = new ReturnValueContainer();
-        ItemWrapperData.itemWrapper = this;
-        ItemWrapperData.thingToDo = () -> {
-            System.out.println(iitem);
-            iitem.onUse(world, user, hand, a);
-        };
-        Core.runPythonModule("nylonmc.content.hack.item");
-        return a.getReturnValue() == null ? super.use(world, user, hand) : new TypedActionResult<>((ActionResult)a.getReturnValue(), user.getStackInHand(hand));
+        synchronized (this) {
+            ReturnValueContainer a = new ReturnValueContainer();
+            useData = new UseData(world, user, hand, a);
+            PythonThread.runPython("import nylonmc.content.minecraft as mc\n" +
+                                   "_this = mc._id_to_item_wrapper[" + this.getNumericalId() + "]\n" +
+                                   "mc._id_to_iitem[" + this.getNumericalId() + "].onUse(_this.useData.world, _this.useData.user, _this.useData.hand, _this.useData.returnValueContainer)\n");
+            return a.getReturnValue() == null ? super.use(world, user, hand) : new TypedActionResult<>((ActionResult)a.getReturnValue(), user.getStackInHand(hand));
+        }
+    }
+
+    public static final class UseData {
+        public final World world;
+        public final PlayerEntity user;
+        public final Hand hand;
+        public final ReturnValueContainer returnValueContainer;
+        public UseData(World world, PlayerEntity user, Hand hand, ReturnValueContainer returnValueContainer) {
+            this.world = world;
+            this.user = user;
+            this.hand = hand;
+            this.returnValueContainer = returnValueContainer;
+        }
     }
 
 }
