@@ -32,6 +32,8 @@ dependencies {
 
 	modImplementation "io.github.nylonmc:NylonMC-Core:${project.nylonmc_core_version}"
 	modImplementation "io.github.cottonmc:cotton-client-commands:${project.cotton_client_commands_version}"
+	//Gradle is a piece of garbage so this is needed https://github.com/Wurst-Imperium/Wurst7/issues/50
+	modApi 'com.google.code.findbugs:jsr305:3.0.2'
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
