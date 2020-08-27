@@ -10,7 +10,10 @@ def main():
         _fabric_item_settings.group(mc.ItemGroups.getMisc())
         class FabricItem(mc.Item):
             def onUse(self, world, user, hand, return_value):
-                log.info("If You See This You Right Clicked tutorial:fabric_item")
+                if world.isClient:
+                    log.info("If You See This You Right Clicked tutorial:fabric_item")
+                    world.setBlockState(user.getBlockPos().down(), mc.Blocks.getGlass().getDefaultState())
+                return_value.set(mc.ActionResult.CONSUME)
         fabric_item = FabricItem(_fabric_item_settings)
         log.info(fabric_item._settings)
         mc.registry.register_item(mc.Identifier("tutorial", "fabric_item"), fabric_item)

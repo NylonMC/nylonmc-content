@@ -28,3 +28,5 @@ class _Registry:
         _id_to_item_wrapper[item_wrapper.getNumericalId()] = item_wrapper
 registry = _Registry()
 ActionResult = JavaClass("io/github/nylonmc/content/proxy/ActionResultProxy")
+BlockPos = JavaClass("io/github/nylonmc/content/wrapper/BlockPosWrapper")
+Blocks = JavaClass("io/github/nylonmc/content/proxy/BlocksProxy")
